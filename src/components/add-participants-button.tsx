@@ -99,7 +99,7 @@ const AddParticipantDialog = () => {
       }}
     >
       <DialogTrigger asChild>
-        <Button className="rounded-full">Adicionar Participante</Button>
+        <Button>Adicionar Participante</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
