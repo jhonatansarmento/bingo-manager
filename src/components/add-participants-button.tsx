@@ -5,6 +5,7 @@ import { getUsedNumbers } from "@/app/actions/get-used-numbers ";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import InputMask from "react-input-mask";
 import { z } from "zod";
 import GenerateNumbersModal from "./generate-numbers-modal";
 import { Button } from "./ui/button";
@@ -48,7 +49,7 @@ const AddParticipantDialog = () => {
         }),
       phone: z
         .string()
-        .min(10, "Telefone inválido.")
+        .min(14, "Telefone inválido.")
         .max(15, "Telefone inválido."),
     })
     .superRefine(async (values, ctx) => {
@@ -151,7 +152,13 @@ const AddParticipantDialog = () => {
                 <FormItem>
                   <FormLabel>Telefone</FormLabel>
                   <FormControl>
-                    <Input placeholder="Ex: 92999999999" {...field} />
+                    <InputMask
+                      mask="(99) 99999-9999"
+                      placeholder="Ex: (92) 99187-0568"
+                      {...field}
+                    >
+                      {(inputProps) => <Input {...inputProps} />}
+                    </InputMask>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
