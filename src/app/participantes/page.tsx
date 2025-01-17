@@ -1,3 +1,6 @@
+import { participantColumns } from "@/app/participantes/columns";
+import AddParticipantsButton from "@/components/add-participants-button";
+import { DataTable } from "@/components/ui/data-table";
 import { db } from "@/lib/prisma";
 
 export default async function ParticipantsPage() {
@@ -9,12 +12,9 @@ export default async function ParticipantsPage() {
         {/* TÍTULO E BOTÃO */}
         <div className="flex h-full items-center justify-between">
           <h1 className="text-2xl font-bold">Cadastro de Participantes</h1>
-          {participants.map((participant) => (
-            <div key={participant.id}>
-              {participant.firstName} - {participant.phone}
-            </div>
-          ))}
+          <AddParticipantsButton />
         </div>
+        <DataTable columns={participantColumns} data={participants} />
       </div>
     </div>
   );
