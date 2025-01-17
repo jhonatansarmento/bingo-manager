@@ -1,6 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 const Home = () => {
   return (
@@ -25,6 +26,9 @@ const Home = () => {
         </Button>
         <Button asChild className='w-full'>
           <a href='/draw'>Sortear Números</a>
+        </Button>
+        <Button asChild className='w-full'>
+          <Link href='/estatisticas'>Estatísticas</Link>
         </Button>
       </div>
     </div>
