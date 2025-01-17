@@ -22,7 +22,7 @@ const Home = () => {
           <a href='/participants/add'>Adicionar Participante</a>
         </Button>
         <Button asChild className='w-full'>
-          <a href='/participants'>Visualizar Participantes</a>
+          <Link href='/participantes'>Visualizar Participantes</Link>
         </Button>
         <Button asChild className='w-full'>
           <a href='/draw'>Sortear Números</a>
