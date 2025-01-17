@@ -26,7 +26,7 @@ const Home = () => {
           <Link href="/participantes">Visualizar Participantes</Link>
         </Button>
         <Button asChild className="w-full">
-          <a href="/draw">Sortear Números</a>
+          <a href="/sorteio">Sortear Números</a>
         </Button>
         <Button asChild>
           <Link href="/estatisticas">Estatísticas</Link>
