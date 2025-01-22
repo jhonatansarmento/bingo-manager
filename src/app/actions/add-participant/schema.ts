@@ -11,8 +11,9 @@ export const addParticipantSchema = z.object({
   fullName: z
     .string()
     .min(2, { message: "O nome completo é obrigatório." })
-    .regex(/^[A-Za-z]+ [A-Za-z]+$/, {
-      message: "Informe o nome completo com pelo menos um sobrenome.",
-    }),
+    .regex(
+      /^[A-Za-zÀ-ÖØ-öø-ÿ]+(?: [A-Za-zÀ-ÖØ-öø-ÿ]+)*$/,
+      "Informe um nome válido com pelo menos uma palavra.",
+    ),
   phone: z.string().min(10, "Telefone inválido.").max(15, "Telefone inválido."),
 });

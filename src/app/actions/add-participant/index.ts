@@ -18,6 +18,18 @@ export const addParticipant = async (params: AddParticipantParamsProps) => {
     .map((num) => num.trim())
     .filter((num) => num !== "");
 
+  const duplicates = numbersArray.filter(
+    (item, index) => numbersArray.indexOf(item) !== index,
+  );
+
+  if (duplicates.length > 0) {
+    throw new Error(
+      `Os números ${duplicates.join(
+        ", ",
+      )} estão duplicados na mesma requisição.`,
+    );
+  }
+
   await Promise.all(
     numbersArray.map((number) =>
       db.participant.create({

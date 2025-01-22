@@ -44,9 +44,10 @@ const AddParticipantDialog = () => {
       fullName: z
         .string()
         .min(2, { message: "O nome completo é obrigatório." })
-        .regex(/^[A-Za-z]+ [A-Za-z]+$/, {
-          message: "Informe o nome completo com pelo menos um sobrenome.",
-        }),
+        .regex(
+          /^[A-Za-zÀ-ÖØ-öø-ÿ]+(?: [A-Za-zÀ-ÖØ-öø-ÿ]+)*$/,
+          "Informe um nome válido, com pelo menos uma palavra.",
+        ),
       phone: z
         .string()
         .min(14, "Telefone inválido.")
@@ -58,6 +59,20 @@ const AddParticipantDialog = () => {
         .split(",")
         .map((num) => num.trim())
         .map(Number);
+
+      const duplicates = numbersArray.filter(
+        (item, index) => numbersArray.indexOf(item) !== index,
+      );
+
+      if (duplicates.length > 0) {
+        duplicates.forEach((num) => {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ["numbers"],
+            message: `O número ${num} está duplicado na entrada.`,
+          });
+        });
+      }
 
       numbersArray.forEach((num) => {
         if (usedNumbers.includes(num)) {
