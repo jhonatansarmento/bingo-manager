@@ -31,5 +31,5 @@ export const addParticipant = async (params: AddParticipantParamsProps) => {
     ),
   );
 
-  revalidatePath("/participants");
+  revalidatePath("/participantes");
 };
