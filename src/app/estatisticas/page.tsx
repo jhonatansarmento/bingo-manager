@@ -10,6 +10,7 @@ const StatsPage = () => {
     const fetchStats = async () => {
       try {
         const statsData = await getStats();
+        console.log("🚀 ~ fetchStats ~ statsData:", statsData);
         setTotalNumbersSold(statsData.totalNumbersSold);
       } catch (error) {
         console.error("Erro ao buscar estatísticas:", error);

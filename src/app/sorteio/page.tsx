@@ -1,8 +1,8 @@
-import { db } from "@/lib/prisma";
+import { getParticipants } from "@/app/actions/get-participants";
 import DrawNumbersPage from "./draw-numbers-page";
 
 export default async function Page() {
-  const participants = await db.participant.findMany();
+  const participants = await getParticipants();
 
   return <DrawNumbersPage initialParticipants={participants} />;
 }
