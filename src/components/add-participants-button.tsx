@@ -2,13 +2,13 @@
 
 import { addParticipant } from "@/app/actions/add-participant";
 import { getUsedNumbers } from "@/app/actions/get-used-numbers ";
+import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import InputMask from "react-input-mask";
 import { z } from "zod";
 import GenerateNumbersModal from "./generate-numbers-modal";
-import { Button } from "./ui/button";
 import {
   Dialog,
   DialogClose,
@@ -28,9 +28,11 @@ import {
   FormMessage,
 } from "./ui/form";
 import { Input } from "./ui/input";
+import { Spinner } from "./ui/spinner";
 
 const AddParticipantDialog = () => {
   const [dialogIsOpen, setDialogIsOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const formSchema = z
     .object({
@@ -95,12 +97,15 @@ const AddParticipantDialog = () => {
   });
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    setLoading(true);
     try {
       await addParticipant(data);
       setDialogIsOpen(false);
       form.reset();
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false); // Desativar loading
     }
   };
 
@@ -185,7 +190,16 @@ const AddParticipantDialog = () => {
                   Cancelar
                 </Button>
               </DialogClose>
-              <Button type="submit">Adicionar</Button>
+              <Button type="submit" disabled={loading}>
+                {loading ? (
+                  <>
+                    <Spinner />
+                    <span className="ml-2">Adicionando...</span>
+                  </>
+                ) : (
+                  "Adicionar"
+                )}
+              </Button>
             </DialogFooter>
           </form>
         </Form>
