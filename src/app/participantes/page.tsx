@@ -3,7 +3,13 @@
 import { getParticipants } from "@/app/actions/get-participants";
 import { participantColumns } from "@/app/participantes/columns";
 import AddParticipantsButton from "@/components/add-participants-button";
+import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+} from "@/components/ui/pagination";
 import { Spinner } from "@/components/ui/spinner";
 import { useEffect, useState } from "react";
 
@@ -20,6 +26,8 @@ export default function ParticipantsPage() {
   const [participants, setParticipants] = useState<Participant[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 10;
 
   useEffect(() => {
     const fetchParticipants = async () => {
@@ -36,6 +44,12 @@ export default function ParticipantsPage() {
 
     fetchParticipants();
   }, []);
+
+  const paginatedData = participants.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize,
+  );
+  const totalPages = Math.ceil(participants.length / pageSize);
 
   return (
     <div>
@@ -54,7 +68,40 @@ export default function ParticipantsPage() {
           ) : error ? (
             <p className="text-red-500">{error}</p>
           ) : (
-            <DataTable columns={participantColumns} data={participants} />
+            <>
+              <DataTable columns={participantColumns} data={paginatedData} />
+              <Pagination>
+                <PaginationContent className="mt-4 flex justify-center gap-4">
+                  <PaginationItem>
+                    <Button
+                      variant="outline"
+                      onClick={() =>
+                        setCurrentPage((prev) => Math.max(prev - 1, 1))
+                      }
+                      disabled={currentPage === 1}
+                    >
+                      Anterior
+                    </Button>
+                  </PaginationItem>
+                  <PaginationItem>
+                    <span className="px-4">
+                      Página {currentPage} de {totalPages}
+                    </span>
+                  </PaginationItem>
+                  <PaginationItem>
+                    <Button
+                      variant="outline"
+                      onClick={() =>
+                        setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                      }
+                      disabled={currentPage === totalPages}
+                    >
+                      Próximo
+                    </Button>
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
+            </>
           )}
         </div>
       </div>
