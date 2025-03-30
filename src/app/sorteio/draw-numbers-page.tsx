@@ -1,7 +1,8 @@
 "use client";
 
+import { getParticipants } from "@/app/actions/get-participants";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DrawHistory } from "./drawHistoryColumns";
 import DrawHistoryTable from "./drawHistoryTable";
 
@@ -14,21 +15,28 @@ interface Participant {
   createdAt: Date;
 }
 
-interface DrawNumbersPageProps {
-  initialParticipants: Participant[];
-}
-
-const DrawNumbersPage = ({
-  initialParticipants = [],
-}: DrawNumbersPageProps) => {
+const DrawNumbersPage = () => {
+  const [participants, setParticipants] = useState<Participant[]>([]);
   const [drawnNumber, setDrawnNumber] = useState<string | null>(null);
   const [winner, setWinner] = useState<Participant | null>(null);
   const [isDrawing, setIsDrawing] = useState(false);
-  const [participants] = useState<Participant[]>(initialParticipants || []);
   const [drawHistory, setDrawHistory] = useState<DrawHistory[]>([]);
 
+  useEffect(() => {
+    const fetchParticipants = async () => {
+      try {
+        const data = await getParticipants();
+        setParticipants(data);
+      } catch (error) {
+        console.error("Erro ao buscar participantes:", error);
+      }
+    };
+
+    fetchParticipants();
+  }, []);
+
   const handleDraw = async () => {
-    if (!participants || participants.length === 0) {
+    if (participants.length === 0) {
       alert("Não há participantes para sortear!");
       return;
     }
@@ -46,7 +54,7 @@ const DrawNumbersPage = ({
       return;
     }
 
-    const animationDuration = 2000;
+    const animationDuration = 4000;
     const startTime = Date.now();
 
     const animateDrawing = () => {
